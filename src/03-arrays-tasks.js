@@ -172,7 +172,6 @@ function insertItem(arr, item, index) {
   let newArr = start;
   newArr.push(item);
   newArr = newArr.concat(end);
-  console.log(newArr);
   return newArr;
 }
 

@@ -36,13 +36,7 @@ function findElement(arr, value) {
  *    5 => [ 1, 3, 5, 7, 9 ]
  */
 function generateOdds(len) {
-  const arr = [];
-  let i = 1;
-  while (arr.length !== len) {
-    arr.push(i);
-    i += 2;
-  }
-  return arr;
+  return new Array(len).fill(0).map((value, index) => 2 * index + 1);
 }
 
 
@@ -75,13 +69,7 @@ function doubleArray(arr) {
  *    [] => []
  */
 function getArrayOfPositives(arr) {
-  const newArr = [];
-  arr.forEach((item) => {
-    if (item > 0) {
-      newArr.push(item);
-    }
-  });
-  return newArr;
+  return arr.filter((item) => item > 0);
 }
 
 /**
@@ -166,13 +154,21 @@ function getStringsLength(arr) {
  *    [ 1, 'b', 'c'], 0, 'x'  => [ 'x', 1, 'b', 'c' ]
  */
 function insertItem(arr, item, index) {
-  const start = arr.slice(0, index);
-  const end = arr.slice(index);
-
-  let newArr = start;
-  newArr.push(item);
-  newArr = newArr.concat(end);
-  return newArr;
+  let last = null;
+  const newArr = arr;
+  for (let i = 0; i < newArr.length; i += 1) {
+    if (i === index) {
+      last = arr[i];
+      newArr[i] = item;
+    }
+    if (i > index) {
+      const buff = newArr[i];
+      newArr[i] = last;
+      last = buff;
+    }
+  }
+  newArr.push(last);
+  return arr;
 }
 
 /**
@@ -225,8 +221,22 @@ function getTail(arr, n) {
  *    +'20,21,22,23,24\n'
  *    +'30,31,32,33,34'
  */
-function toCsvText(/* arr */) {
-  throw new Error('Not implemented');
+function toCsvText(arr) {
+  let str = '';
+  for (let i = 0; i < arr.length; i += 1) {
+    for (let j = 0; j < arr[i].length; j += 1) {
+      if (j === arr[i].length - 1) {
+        str += `${arr[i][j]}`;
+      } else {
+        str += `${arr[i][j]},`;
+      }
+    }
+    if (i === arr.length - 1) {
+      return str;
+    }
+    str += '\n';
+  }
+  return str;
 }
 
 /**
@@ -298,8 +308,16 @@ function getSecondItems(arr) {
  *  [ 'a', 'b', 'c', null ] => [ 'a', 'b','b', 'c','c','c',  null,null,null,null ]
  *  [ 1,2,3,4,5 ] => [ 1, 2,2, 3,3,3, 4,4,4,4, 5,5,5,5,5 ]
  */
-function propagateItemsByPositionIndex(/* arr */) {
-  throw new Error('Not implemented');
+function propagateItemsByPositionIndex(arr) {
+  const newArr = [];
+
+  arr.forEach((item, index) => {
+    for (let i = 0; i <= index; i += 1) {
+      newArr.push(item);
+    }
+  });
+
+  return newArr;
 }
 
 
@@ -316,8 +334,18 @@ function propagateItemsByPositionIndex(/* arr */) {
  *   [ 1,2,3,4,5,6,7,8,9,10 ] => [ 10, 9, 8 ]
  *   [ 10, 10, 10, 10 ] => [ 10, 10, 10 ]
  */
-function get3TopItems(/* arr */) {
-  throw new Error('Not implemented');
+function get3TopItems(arr) {
+  const newArr = arr.sort((a, b) => a - b);
+  const res = [];
+  if (arr.length === 0) {
+    return [];
+  }
+  let i = 0;
+  while (arr.length !== 0 && i !== 3) {
+    res.push(newArr.pop());
+    i += 1;
+  }
+  return res;
 }
 
 
@@ -357,8 +385,10 @@ function getPositivesCount(arr) {
  *   [ 'nine','eight','nine','eight'] => [ 'eight','eight','nine','nine']
  *   [ 'one','one','one','zero' ]     => [ 'zero','one','one','one' ]
  */
-function sortDigitNamesByNumericOrder(/* arr */) {
-  throw new Error('Not implemented');
+function sortDigitNamesByNumericOrder(arr) {
+  const config = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+
+  return arr.sort((a, b) => config.indexOf(a) - config.indexOf(b));
 }
 
 /**
@@ -467,8 +497,13 @@ function toStringList(arr) {
  *      { country: 'Russia',  city: 'Saint Petersburg' }
  *    ]
  */
-function sortCitiesArray(/* arr */) {
-  throw new Error('Not implemented');
+function sortCitiesArray(arr) {
+  return arr.sort((a, b) => {
+    if (a.country === b.country) {
+      return a.city.localeCompare(b.city);
+    }
+    return a.country.localeCompare(b.country);
+  });
 }
 
 /**
@@ -637,30 +672,16 @@ function getElementByIndexes(arr, indexes) {
  *
  */
 function swapHeadAndTail(arr) {
-  const lengthHalf = Math.floor(arr.length / 2);
-
-  const head = [];
-
-  for (let i = 0; i < lengthHalf; i += 1) {
-    head.push(arr[i]);
-    arr.shift();
+  if (arr.length === 1) {
+    return arr;
   }
+  const head = arr.slice(0, Math.floor(arr.length / 2));
+  const tail = arr.slice(-Math.floor(arr.length / 2));
 
-  let tail = [];
-
-  for (let i = arr.length - 1; i > lengthHalf; i -= 1) {
-    tail.push(arr[i]);
-    arr.pop();
+  if (arr.length % 2 !== 0) {
+    tail.push(arr[Math.floor(arr.length / 2)]);
   }
-
-  tail = tail.reverse();
-
-  let newArr = [];
-  newArr = newArr.concat(head);
-  newArr = newArr.concat(arr);
-  newArr = newArr.concat(tail);
-
-  return newArr;
+  return tail.concat(head);
 }
 
 

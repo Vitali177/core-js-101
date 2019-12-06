@@ -419,7 +419,6 @@ function toNaryString(/* num, n */) {
  */
 function getCommonDirectoryPath(pathes) {
   const pathesArr = pathes.map((item) => item.split('/'));
-  console.log(pathesArr);
 
   const directory = pathesArr[0][0];
 

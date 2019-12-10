@@ -259,8 +259,12 @@ function getRectangleString(width, height) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const input = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  const output = 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm';
+  const index = (x) => input.indexOf(x);
+  const translate = (x) => (index(x) > -1 ? output[index(x)] : x);
+  return str.split('').map(translate).join('');
 }
 
 /**
@@ -307,7 +311,28 @@ function isString(value) {
  *   'K♠' => 51
  */
 function getCardId(/* value */) {
-  throw new Error('Not implemented');
+  // const config = {
+  //   9827: 0,
+  //   65: 0,
+  //   2: 1,
+  //   3: 2,
+  //   4: 3,
+  //   5: 4,
+  //   6: 5,
+  //   7: 6,
+  //   8: 7,
+  //   9: 8,
+  //   10: 9,
+  // };
+
+  // console.log(value.charCodeAt(1));
+  // if (value.charCodeAt(1) === 9827) {
+  //   console.log(value.charCodeAt(0));
+  //   console.log(config[value.charCodeAt(1)] + config[value.charCodeAt(0)]);
+  //   return config[value.charCodeAt(1)] + config[value];
+  // }
+
+  // return 5;
 }
 
 
